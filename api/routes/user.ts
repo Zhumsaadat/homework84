@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 const usersRouter = express.Router();
 
 usersRouter.post('/', async (req, res, next) => {
-    try{
+    try {
         const user = new User({
             username: req.body.username,
             password: req.body.password,

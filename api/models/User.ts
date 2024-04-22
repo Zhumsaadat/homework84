@@ -8,7 +8,7 @@ const Schema = mongoose.Schema;
 
 const UserSchema = new Schema<UserMutation, UserModel>({
     username: {
-        type:String,
+        type: String,
         required: true,
         unique: true
     },
@@ -17,12 +17,12 @@ const UserSchema = new Schema<UserMutation, UserModel>({
         required: true,
     },
     token: {
-        type:String,
+        type: String,
         required: true
     }
 });
 
-UserSchema.methods.checkPassword = async function(password: string) {
+UserSchema.methods.checkPassword = async function (password: string) {
     return await bcrypt.compare(password, this.password);
 };
 
@@ -31,7 +31,7 @@ UserSchema.methods.generateToken = function () {
 };
 
 UserSchema.pre('save', async function (next) {
-    if(!this.isModified('password')) {
+    if (!this.isModified('password')) {
         return next();
     }
     const salt = await bcrypt.genSalt(SALT_WORK_FACTOR);

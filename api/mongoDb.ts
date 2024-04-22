@@ -1,4 +1,4 @@
-import {Db, MongoClient} from 'mongodb';
+import { Db, MongoClient } from 'mongodb';
 
 let db: Db;
 let client: MongoClient;
@@ -9,7 +9,7 @@ const connect = async () => {
 }
 
 const disconnect = async () => {
-    await  client.close();
+    await client.close();
 }
 
 const mongoDb = {
