@@ -24,7 +24,7 @@ const TaskSchema = new Schema({
     enum: ['new', 'in_progress', 'complete'],
     default: 'new'
   }
-});
+}, { versionKey: false });
 
 const Task = mongoose.model<TaskMutation>('Task', TaskSchema);
 
