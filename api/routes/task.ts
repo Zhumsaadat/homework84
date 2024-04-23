@@ -32,4 +32,72 @@ taskRouter.post('/', async (req, res, next) => {
     }
 });
 
+taskRouter.get('/', async (req, res, next) => {
+  try{
+    const token = req.header('Authorization');
+    if (!token) {
+      return res.status(404).send({message: 'Not found token'});
+    }
+
+    const userId = req.body.user;
+    const tasks = await Task.find({ user: userId });
+    res.send(tasks);
+  }catch (e){
+    next(e)
+  }
+});
+
+taskRouter.put('/:id', async (req, res, next) => {
+  try {
+    const token = req.header('Authorization');
+    if (!token) {
+      return res.status(401).send({ message: 'Please log in' });
+    }
+
+    const taskId = req.params.id;
+    const userId = req.body.user;
+
+    const task = await Task.findById(taskId);
+    if (!task) {
+      return res.status(404).send({ message: 'Task not found' });
+    }
+
+    if (task.user.toString() !== userId) {
+      return res.status(403).send({ message: 'Forbidden' });
+    }
+
+    await Task.findByIdAndUpdate(taskId, req.body);
+    const updatedTask = await Task.findById(taskId);
+    res.send(updatedTask);
+  } catch (e) {
+    next(e);
+  }
+});
+
+taskRouter.delete('/:id', async (req, res, next) => {
+  try {
+    const token = req.header('Authorization');
+    if (!token) {
+      return res.status(401).send({ message: 'Please log in' });
+    }
+
+    const taskId = req.params.id;
+    const userId = req.body.user;
+
+    const task = await Task.findById(taskId);
+    if (!task) {
+      return res.status(404).send({ message: 'Task not found' });
+    }
+
+    if (task.user.toString() !== userId) {
+      return res.status(403).send({ message: 'Forbidden' });
+    }
+
+    await Task.findByIdAndDelete(taskId);
+    res.send({ message: 'Task deleted successfully' });
+  } catch (e) {
+    next(e);
+  }
+});
+
 export default taskRouter;
