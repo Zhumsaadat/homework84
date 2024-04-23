@@ -28,7 +28,7 @@ const auth = async (expressReq: Request, res: Response, next: NextFunction) => {
   }
 
 
-  req.body = task;
+  req.body._id = taskId;
   next();
 };
 

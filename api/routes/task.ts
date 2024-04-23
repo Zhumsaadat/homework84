@@ -50,6 +50,7 @@ taskRouter.get('/', async (req, res, next) => {
 
 taskRouter.put('/:id', auth, async (req, res, next) => {
   try {
+    console.log(req.body)
     const taskId = req.body._id;
 
     await Task.findByIdAndUpdate(taskId, req.body);
